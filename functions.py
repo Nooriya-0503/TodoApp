@@ -12,6 +12,7 @@ def write_todo(todo_to_write, FILEPATH="todo.txt"):
         f.writelines(todo_to_write)
 
 
+# This is executed when This is is executed
 if __name__=="__main__":
     todo = input("Enter Todo To Add: ")
     write_todo(todo)
