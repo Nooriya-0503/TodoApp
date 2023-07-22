@@ -1,11 +1,13 @@
 import PySimpleGUI as sg
 from functions import *
+import time
 
 sg.theme("BlueMono")
 
 #Layout buttons and texts
 
-text1 = sg.Text("Tye in a To-Do")
+clock = sg.Text("", key="clock")
+text1 = sg.Text("Type in a To-Do")
 input_text = sg.Input(tooltip="Enter ToDo", key="todo")
 add_button = sg.Button("Add", size=(7))
 
@@ -17,7 +19,8 @@ complete_button = sg.Button("Complete")
 exit_button = sg.Button("Exit")
 
 
-windows = sg.Window("ToDo App", layout=[[text1],
+windows = sg.Window("ToDo App", layout=[[clock],
+                                        [text1],
                                         [input_text, add_button],
                                         [list_todo, edit_button, complete_button],
                                         [exit_button]],
@@ -25,8 +28,9 @@ windows = sg.Window("ToDo App", layout=[[text1],
 
 # Kind Of BackEnd (Processing)
 while True:
-    event, values = windows.read()
-    print(event, values)
+    event, values = windows.read(timeout=200)
+    windows["clock"].update(time.strftime("%B %d, %Y %X"))
+    
     match event:
         case "Add":
             todos_list = get_todos()
@@ -36,28 +40,36 @@ while True:
             write_todo(todos_list)
             
             windows['list'].update(values=todos_list)
-            windows["todo"].update("")
+            windows["todo"].update("") #Write key in [] brackets
 
 
         case "Edit":
-            todo_to_edit = values["list"][0]
-            todo_to_write = values["todo"]
+            try:
+                todo_to_edit = values["list"][0]
+                todo_to_write = values["todo"]
 
-            todos_list = get_todos()
+                todos_list = get_todos()
 
-            Edit_index = todos_list.index(todo_to_edit)
-            todos_list[Edit_index] = todo_to_write + "\n"
+                Edit_index = todos_list.index(todo_to_edit)
+                todos_list[Edit_index] = todo_to_write + "\n"
 
-            write_todo(todos_list)
-            windows["todo"].update("")
-            windows["list"].update(todos_list)
+                write_todo(todos_list)
+                windows["todo"].update("")
+                windows["list"].update(todos_list)
+
+            except IndexError:
+                sg.popup("Please enter a ToDo", font=("Helvetica", 20))
            
         case "Complete":
-            todo_to_complete = values["list"][0]
-            todos_list = get_todos()
-            todos_list.remove(todo_to_complete)
-            write_todo(todos_list)
-            windows["list"].update(todos_list)
+            try:
+                todo_to_complete = values["list"][0]
+                todos_list = get_todos()
+                todos_list.remove(todo_to_complete)
+                write_todo(todos_list)
+                windows["list"].update(todos_list)
+
+            except IndexError:
+                sg.popup("Please choose a ToDo to complete", font=("Helvetica", 20))
            
 
         case "Exit":
