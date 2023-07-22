@@ -1,7 +1,1 @@
-Play Badminton
-Practise code
-Play Games
-Eat Healthy
-Do Yoga
-Practise Maths
-Solve Rd Sharma
+& C:/Python310/python.exe "c:/Users/HUAWEI/Desktop/CS_code_python/Todo App/functions.py"
