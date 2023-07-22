@@ -1,6 +1,8 @@
 import PySimpleGUI as sg
 from functions import *
 
+sg.theme("BlueMono")
+
 #Layout buttons and texts
 
 text1 = sg.Text("Tye in a To-Do")
