@@ -5,14 +5,14 @@ import os
 
 
 if not os.path.exists("todo.txt"):
-    with open("todo.txt","r") as f:
+    with open("todo.txt","w") as f:
         pass
 
 sg.theme("BlueMono")
 
 #Layout buttons and texts
 
-clock = sg.Text("", key="clock")
+clock = sg.Text("", key="clock", text_color="Green")
 text1 = sg.Text("Type in a To-Do")
 input_text = sg.Input(tooltip="Enter ToDo", key="todo")
 add_button = sg.Button("Add", size=(7), mouseover_colors="black")
@@ -46,7 +46,7 @@ while True:
             write_todo(todos_list)
             
             windows['list'].update(values=todos_list)
-            windows["todo"].update("") #Write key in [] brackets
+            windows["todo"].update("") #Write key in [] brackets or event
 
 
         case "Edit":
@@ -64,7 +64,7 @@ while True:
                 windows["list"].update(todos_list)
 
             except IndexError:
-                sg.popup("Please enter a ToDo", font=("Helvetica", 20))
+                sg.popup("Please enter a ToDo", font=("Helvetica", 20), text_color="Red")
            
         case "Complete":
             try:
@@ -73,9 +73,10 @@ while True:
                 todos_list.remove(todo_to_complete)
                 write_todo(todos_list)
                 windows["list"].update(todos_list)
+                
 
             except IndexError:
-                sg.popup("Please choose a ToDo to complete", font=("Helvetica", 20))
+                sg.popup("Please choose a ToDo to complete", font=("Helvetica", 20), text_color="Red")
            
 
         case "Exit":
